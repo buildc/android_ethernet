@@ -1,0 +1,5 @@
+#!/system/bin/sh
+ifconfig eth0 192.168.1.201 netmask 255.255.255.0
+route add default gw 192.168.1.1 dev eth0
+setprop net.dns1 168.95.192.1
+setprop net.dns2 168.95.1.1

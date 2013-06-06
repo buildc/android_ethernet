@@ -1,0 +1,37 @@
+Android ethernet howto, 2013/06/06, alexacchen@gmail.com
+
+Kernel:
+	01, For DM9621A, use standard USB cdc driver (communication device class)
+	02, Check "/sys/class/net/ethx/operstate" eth0 status (UP/DOWN/UNKNOW...)
+	03, Check "/sys/class/net/ethx/carrier" RJ45 status (0/1)
+
+Linux:
+01, Configure eth0:
+	ifconfig eth0 x.x.x.x netmask x.x.x.x
+	route add default gw x.x.x.x
+	setprop net.dns1 x.x.x.x
+	setprop net.dns2 x.x.x.x
+
+02, Use DHCP:
+	netcfg eth0 up dhcp
+	setprop net.dns1 x.x.x.x
+	setprop net.dns2 x.x.x.x
+	
+03, Start dhcp/iprenew daemon at initial table:
+	# dhcp ethx, where x is index (0~x)
+	service dhcpcd_ethx /system/bin/dhcpcd -ABKL
+    disabled
+    oneshot
+
+	# oprenew ethx, where x is index (0~x)
+	service iprenew_ethx /system/bin/dhcpcd -n
+	disabled
+	oneshot
+
+	We will find daemon named "init.svc.dhcpcd_ethx" and "dhcp.ethx.result"
+	
+Android:
+	01, build and get the "libethernet.xxx.so" and "alex_ethtest"
+	02, copy "libethernet.xxx.so" to /system/lib/hw
+	03, include "libethernet.h" to get API list
+	

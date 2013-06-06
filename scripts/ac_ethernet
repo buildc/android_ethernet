@@ -1,0 +1,66 @@
+#!/system/bin/sh
+
+if [ $1 ] ; then
+	ETH_DEVICE=$1
+else
+	exit 0
+fi
+
+if [ $2 ] ; then
+	ETH_PARAM=$2
+else
+	exit 0
+fi
+
+if [ $3 ] ; then
+	ETH_IP1=$3
+fi
+
+if [ $4 ] ; then
+	ETH_IP2=$4
+fi
+
+if [ $5 ] ; then
+	ETH_IP3=$5
+fi
+
+function set_ip()
+{
+	echo "Set $ETH_DEVICE IP=$ETH_IP1"
+	echo "Set $ETH_DEVICE NETMASK=$ETH_IP2"
+	echo "Set $ETH_DEVICE GATEWAY=$ETH_IP3"
+
+	ifconfig $ETH_DEVICE $ETH_IP1 netmask $ETH_IP2
+	route add default gw $ETH_IP3 dev $ETH_DEVICE
+}
+
+function set_dhcp()
+{
+	echo "Set $ETH_DEVICE to DHCP"
+	netcfg $ETH_DEVICE up dhcp
+}
+
+function set_dns()
+{
+	if [ $ETH_IP1 ] ; then
+		echo "Set $ETH_DEVICE DNS1=$ETH_IP1"
+
+		setprop net.dns1 $ETH_IP1
+	fi
+
+	if [ $ETH_IP2 ] ; then
+		echo "Set $ETH_DEVICE DNS2=$ETH_IP2"
+
+		setprop net.dns1 $ETH_IP2
+	fi
+}
+
+if [ $ETH_PARAM = "ip" ] ; then
+	set_ip
+elif [ $ETH_PARAM = "dhcp" ] ; then
+	set_dhcp
+elif [ $ETH_PARAM = "dns" ] ; then
+	set_dns
+fi
+
+exit 0

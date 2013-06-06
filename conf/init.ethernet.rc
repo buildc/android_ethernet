@@ -1,0 +1,11 @@
+on fs
+
+	# dhcp ethx, where x is index (0~x)
+	service dhcpcd_ethx /system/bin/dhcpcd -ABKL
+    disabled
+    oneshot
+
+	# oprenew ethx, where x is index (0~x)
+	service iprenew_ethx /system/bin/dhcpcd -n
+	disabled
+	oneshot

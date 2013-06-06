@@ -1,0 +1,4 @@
+#!/system/bin/sh
+netcfg eth0 up dhcp
+setprop net.dns1 168.95.192.1
+setprop net.dns2 168.95.1.1
