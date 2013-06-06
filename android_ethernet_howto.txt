@@ -27,8 +27,10 @@ Linux:
 	service iprenew_ethx /system/bin/dhcpcd -n
 	disabled
 	oneshot
-
+	
 	We will find daemon named "init.svc.dhcpcd_ethx" and "dhcp.ethx.result"
+
+04, Add "interface ethx" in dhcpcd.conf
 	
 Android:
 	01, build and get the "libethernet.xxx.so" and "alex_ethtest"
